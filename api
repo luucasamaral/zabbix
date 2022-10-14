@@ -200,8 +200,6 @@ ls  -d /usr/share/snmp/mibs/vendors/*/ | xargs -n1 echo mibdirs +  >> /etc/snmp/
 EOF
 . ~/.bashrc 
 alias fixmibs="MIBDIRS=`ls  -d /usr/share/snmp/mibs/*/*/| xargs | tr ' ' ':'`"
-wget https://raw.githubusercontent.com/arturbrasil/curriculo/gh-pages/whats.fix
-bash whats.fix
 systemctl enable zabbix-server zabbix-agent apache2 
 systemctl enable grafana-server
 touch /tmp/finish 

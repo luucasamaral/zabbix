@@ -11,8 +11,8 @@ rm *deb* > /dev/null 2>&1
 apt update
 apt upgrade -y
 apt install -y linux-headers-generic build-essential module-assistant software-properties-common curl pv python3-pip vim -y  > /dev/null 2>&1
-wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu22.04_all.deb
-dpkg -i zabbix-release_6.4-1+ubuntu22.04_all.deb
+wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu20.04_all.deb
+dpkg -i zabbix-release_6.4-1+ubuntu20.04_all.deb
 apt update
 apt apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent -y
 
@@ -205,7 +205,7 @@ touch /tmp/finish
 ip=`ip a | grep -oP '(?<=inet |addr:)(?:\d+\.){3}\d+' | grep -v 127.0.0.1`
 clear
 echo -e "\n\tZabbix: http://$ip/zabbix \tUsuário: Admin - Senha: zabbix \n\tGrafana: http://$ip:3000 \tUsuário: admin - Senha: admin \n\tLogs: http://$ip:6688 \tUsuário: aluno - Senha: logs" | boxes -d spring -a hc -p h8 |lolcat  
-cowsay -f tux "No wizard do zabbix, clique em avançar em todas etapas sem alterar nada, nem mesmo as informações do MYSQL!" | lolcat
+cowsay -f tux "Muito obrigado por estar utilizando esse script... Idealização dele foi feita pelo Arthur Brasil. Modificado e atualizado por Lucas Amaral. No wizard do zabbix, clique em avançar em todas etapas sem alterar nada, nem mesmo as informações do MYSQL!" | lolcat
 #lvresize -t -v -l +100%FREE /dev/mapper/ubuntu–vg-ubuntu–lv
 #lvresize -v -l +100%FREE /dev/mapper/ubuntu–vg-ubuntu–lv
 #resize2fs -p /dev/mapper/ubuntu–vg-ubuntu–lv

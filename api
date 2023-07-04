@@ -2,7 +2,7 @@
 
 apt update
 apt install -y ruby screen figlet toilet cowsay lolcat boxes  > /dev/null 2>&1
-toilet -w 100 -f smmono9 Zuke ISP | lolcat
+toilet -w 100 Zuke ISP | lolcat
 toilet -w 82 -f mini Iniciando... | lolcat
 gem install apt-spy2
 # apt-spy2 fix --commit
@@ -18,7 +18,7 @@ apt apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbi
 
 clear
 toilet -w 82 -f mini Zuke ISP | lolcat
-toilet -w 100 -f smmono9 Zuke ISP | lolcat
+toilet -w 100 Zuke ISP | lolcat
 rm /tmp/finish
 apt install -y mysql-server mysql-client
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent 
@@ -51,9 +51,9 @@ mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 1";
 mysql -uroot --password="" -e "SELECT host, user FROM mysql.user";
 mysql -uroot --password="" -e "SHOW GRANTS FOR 'zabbix'@'localhost'";
 
-figlet -w 100 -f smmono9 "CRIANDO BANCO DE DADOS!" | lolcat
-figlet -w 100 -f smmono9  "PODE DEMORAR!"  | lolcat
-figlet -w 100 -f smmono9 "AGUARDE!"  | lolcat
+figlet -w 100  "CRIANDO BANCO DE DADOS!" | lolcat
+figlet -w 100  "PODE DEMORAR!"  | lolcat
+figlet -w 100  "AGUARDE!"  | lolcat
 
 zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | pv --progress --size  `gzip -l /usr/share/zabbix-sql-scripts/mysql/server.sql.gz  | sed -n 2p | awk '{print $2}'` | mysql --default-character-set=utf8mb4 -uroot --password="" zabbix
 mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 0";
@@ -76,7 +76,7 @@ systemctl restart zabbix-server zabbix-agent apache2 grafana-server
 
 grafana-cli plugins install alexanderzobnin-zabbix-app
 grafana-cli plugins update alexanderzobnin-zabbix-app
-figlet -w 100 -f smmono9 "CRIANDO SERVIDOR DE LOGS!" | lolcat
+figlet -w 100 "CRIANDO SERVIDOR DE LOGS!" | lolcat
 
 apt install -y npm  
 npm install pm2 -g  > /dev/null 2>&1
@@ -143,7 +143,7 @@ systemctl status mysql | grep Active
 systemctl status zabbix-server | grep Active
 systemctl status zabbix-agent | grep Active
 systemctl status grafana-server | grep Active
-figlet -w 100 -f smmono9 "INSTALANDO ACERVO DE MIBs!" | lolcat
+figlet -w 80 "INSTALANDO ACERVO DE MIBs!" | lolcat
 cd /usr/share/snmp/mibs
 git clone https://github.com/arturbrasil/vendors.git
 

@@ -67,9 +67,9 @@ sudo systemctl enable zabbix-server zabbix-agent apache2
 > /var/www/html/index.html 
 sed -i 's/# php_value date.timezone Europe\/Riga/php_value date.timezone America\/Sao_Paulo/g' /etc/apache2/conf-enabled/zabbix.conf
 
-sudo apt-get install -y adduser libfontconfig1
-wget https://dl.grafana.com/enterprise/release/grafana-enterprise_10.0.1_amd64.deb
-sudo dpkg -i grafana-enterprise_10.0.1_amd64.deb
+sudo apt-get install -y adduser libfontconfig1 musl
+wget https://dl.grafana.com/enterprise/release/grafana-enterprise_9.5.9_amd64.deb
+sudo dpkg -i grafana-enterprise_9.5.9_amd64.deb
 
 
 systemctl restart zabbix-server zabbix-agent apache2 grafana-server

@@ -4,7 +4,7 @@ export NEEDRESTART_MODE=a
 export DEBIAN_FRONTEND=noninteractive
 apt update
 apt install -y ruby screen figlet toilet cowsay lolcat boxes  > /dev/null 2>&1
-toilet -w 100 -f smmono9 Monflix | lolcat
+toilet -w 100 -f smmono9 Megatech | lolcat
 toilet -w 82 -f mini Iniciando... | lolcat
 gem install apt-spy2
 # apt-spy2 fix --commit
@@ -71,9 +71,9 @@ sudo systemctl enable zabbix-server zabbix-agent apache2
 > /var/www/html/index.html 
 sed -i 's/# php_value date.timezone Europe\/Riga/php_value date.timezone America\/Sao_Paulo/g' /etc/apache2/conf-enabled/zabbix.conf
 
-sudo apt-get install -y adduser libfontconfig1
-wget https://dl.grafana.com/oss/release/grafana_8.5.9_amd64.deb
-sudo dpkg -i grafana_8.5.9_amd64.deb
+sudo apt-get install -y adduser libfontconfig1 musl
+wget https://dl.grafana.com/enterprise/release/grafana-enterprise_9.5.9_amd64.deb
+sudo dpkg -i grafana-enterprise_9.5.9_amd64.deb
 
 
 systemctl restart zabbix-server zabbix-agent apache2 grafana-server
@@ -171,13 +171,7 @@ grafana_host="http://localhost:3000"
 grafana_cred="admin:admin"
 grafana_datasource="zabbix"
 apt install -y parallel jq curl httpie nmap ncat dnsutils unzip snmp-mibs-downloader htop speedtest-cli iotop nmap silversearcher-ag ngrep -y   > /dev/null 2>&1
-snap install gotop
-wget https://raw.githubusercontent.com/arturbrasil/curriculo/gh-pages/dash-redes-sociais.json
-
-cat dash-redes-sociais.json | jq '. * {overwrite: true, dashboard: {id: null}}' | curl -s -k -u "$grafana_cred" -XPOST -H "Accept: application/json" \
-    -H "Content-Type: application/json" \
-    $grafana_host/api/dashboards/import  -d  @- ;
-
+snap install goto
 
 #FIX CACHESIZE
 #sed s/'# CacheSize=8M'/'CacheSize=16M'/g -i /etc/zabbix/zabbix_server.conf

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 pro config set apt_news=false
 export NEEDRESTART_MODE=a
 export DEBIAN_FRONTEND=noninteractive

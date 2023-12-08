@@ -19,4 +19,74 @@ clear
 #!INSTALAÇÃO REPOSITORIO MYSQL
 toilet -w 82 -f mini Iniciando... | lolcat
 toilet -w 82 -f mini Instalação MYSQL | lolcat
-mysql -uroot -p
+apt install -y mysql-server mysql-client
+apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent 
+apt install -y locales   > /dev/null 2>&1
+locale-gen pt_BR.UTF-8 
+m-a prepare 
+
+# dpkg-reconfigure locales
+update-locale LANG=pt_BR.UTF-8 
+
+apt install -y snmp snmpd     > /dev/null 2>&1
+apt install -y snmp-mibs-downloader  
+mkdir -p $HOME/.snmp
+
+export DEBIAN_FRONTEND=noninteractive
+
+mysql -uroot --password="" -e "create database zabbix character set utf8mb4 collate utf8mb4_bin"; 
+mysql -uroot --password="" -e "CREATE USER 'zabbix'@'localhost'";
+mysql -uroot --password="" -e "GRANT ALL ON zabbix.* TO 'zabbix'@'localhost'";
+
+mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 1";
+mysql -uroot --password="" -e "SELECT host, user FROM mysql.user";
+mysql -uroot --password="" -e "SHOW GRANTS FOR 'zabbix'@'localhost'";
+
+figlet -w 100  "CRIANDO BANCO DE DADOS!" | lolcat
+figlet -w 100  "PODE DEMORAR!"  | lolcat
+figlet -w 100  "AGUARDE!"  | lolcat
+
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | pv --progress --size  `gzip -l /usr/share/zabbix-sql-scripts/mysql/server.sql.gz  | sed -n 2p | awk '{print $2}'` | mysql --default-character-set=utf8mb4 -uroot --password="" zabbix
+mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 0";
+
+apt install php-mysql
+a2enconf zabbix-frontend-php 
+sudo systemctl restart zabbix-server zabbix-agent apache2
+sudo systemctl enable zabbix-server zabbix-agent apache2
+
+#FIX CACHESIZE
+#sed s/'# CacheSize=8M'/'CacheSize=16M'/g -i /etc/zabbix/zabbix_server.conf
+systemctl enable zabbix-server zabbix-agent apache2 grafana-server
+systemctl restart zabbix-server zabbix-agent apache2 grafana-server
+cat <<'EOF' >> ~/.bashrc
+shopt -s histappend
+HISTFILESIZE=1000000
+HISTSIZE=1000000
+HISTCONTROL=ignoreboth
+HISTIGNORE='history'
+HISTTIMEFORMAT='%F %T '
+shopt -s cmdhist
+PROMPT_COMMAND='history -a'
+
+alias getip="ip a | grep -oP '(?<=inet |addr:)(?:\d+\.){3}\d+' | grep -v 127.0.0.1"
+alias testdns="parallel -j0 --tag dig @{}  ::: 208.67.222.222 208.67.220.220 198.153.192.1 198.153.194.1 156.154.70.1 156.154.71.1 8.8.8.8 8.8.4.4 | grep Query | sort -nk5"
+alias fixmibs=export MIBDIRS=`ls  -d /usr/share/snmp/mibs/vendors/*/ |  xargs | tr ' ' ':'` 
+export MIBDIRS=`ls  -d /usr/share/snmp/mibs/vendors/*/ |  xargs | tr ' ' ':'` 
+ls  -d /usr/share/snmp/mibs/vendors/*/ | xargs -n1 echo mibdirs +  >> /etc/snmp/snmp.conf
+#echo "mibs +ALL" >> /etc/snmp/snmp.conf
+
+EOF
+. ~/.bashrc 
+alias fixmibs="MIBDIRS=`ls  -d /usr/share/snmp/mibs/*/*/| xargs | tr ' ' ':'`"
+systemctl enable zabbix-server zabbix-agent apache2 
+systemctl enable grafana-server
+touch /tmp/finish 
+ip=`ip a | grep -oP '(?<=inet |addr:)(?:\d+\.){3}\d+' | grep -v 127.0.0.1`
+clear
+echo -e "\n\tZabbix: http://$ip/zabbix \tUsuário: Admin - Senha: zabbix \n\tGrafana: http://$ip:3000 \tUsuário: admin - Senha: admin \n\tLogs: http://$ip:6688 \tUsuário: aluno - Senha: logs" | boxes -d spring -a hc -p h8 |lolcat  
+cowsay -f tux "No wizard do zabbix, clique em avançar em todas etapas sem alterar nada, nem mesmo as informações do MYSQL!" | lolcat
+echo -e "\n\tCréditos:\tLucas Amaral (Criador) \n\tCréditos: \tArthur Brasil (Mibs)\n\tCréditos: \tErasmo (Algumas Ideias)" | boxes -d unicornthink |lolcat  
+#lvresize -t -v -l +100%FREE /dev/mapper/ubuntu–vg-ubuntu–lv
+#lvresize -v -l +100%FREE /dev/mapper/ubuntu–vg-ubuntu–lv
+#resize2fs -p /dev/mapper/ubuntu–vg-ubuntu–lv
+toilet -w 100 -f mini FIM. | lolcat

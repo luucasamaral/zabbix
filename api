@@ -1,6 +1,5 @@
 #!/bin/bash
 
-apt update
 apt install -y ruby screen figlet toilet cowsay lolcat boxes  > /dev/null 2>&1
 toilet -w 100 Zuke ISP | lolcat
 toilet -w 82 -f mini Iniciando... | lolcat

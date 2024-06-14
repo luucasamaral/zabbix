@@ -16,8 +16,8 @@ apt update
 apt apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent -y
 
 clear
-toilet -w 82 -f mini Zuke ISP | lolcat
-toilet -w 100 Zuke ISP | lolcat
+toilet -w 82 -f mini Cloud ISP | lolcat
+toilet -w 100 Cloud ISP | lolcat
 rm /tmp/finish
 apt install -y mysql-server mysql-client
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent 

@@ -3,10 +3,6 @@
 apt install -y ruby screen figlet toilet cowsay lolcat boxes  > /dev/null 2>&1
 toilet -w 100 Cloud ISP | lolcat
 toilet -w 82 -f mini Iniciando... | lolcat
-gem install apt-spy2
-# apt-spy2 fix --commit
-cd /tmp 
-rm *deb* > /dev/null 2>&1
 apt update
 apt upgrade -y
 apt install -y linux-headers-generic build-essential module-assistant software-properties-common curl pv python3-pip vim -y  > /dev/null 2>&1
@@ -15,11 +11,11 @@ dpkg -i zabbix-release_7.0-1+ubuntu22.04_all.deb
 apt update
 apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent -y
 
-clear
+figlet -w 100  "CRIANDO BANCO DE DADOS!" | lolcat
+figlet -w 100  "PODE DEMORAR!"  | lolcat
+figlet -w 100  "AGUARDE!"  | lolcat
 toilet -w 82 -f mini Cloud ISP | lolcat
-toilet -w 100 Cloud ISP | lolcat
-rm /tmp/finish
-apt install -y mysql-client
+
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent 
 apt install -y locales   > /dev/null 2>&1
 locale-gen pt_BR.UTF-8 
@@ -44,15 +40,12 @@ mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 1";
 mysql -uroot --password="" -e "SELECT host, user FROM mysql.user";
 mysql -uroot --password="" -e "SHOW GRANTS FOR 'zabbix'@'localhost'";
 
-figlet -w 100  "CRIANDO BANCO DE DADOS!" | lolcat
 figlet -w 100  "PODE DEMORAR!"  | lolcat
 figlet -w 100  "AGUARDE!"  | lolcat
 
 zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | pv --progress --size  `gzip -l /usr/share/zabbix-sql-scripts/mysql/server.sql.gz  | sed -n 2p | awk '{print $2}'` | mysql --default-character-set=utf8mb4 -uroot --password="" zabbix
 mysql -uroot --password="" -e "set global log_bin_trust_function_creators = 0";
 
-apt install php-mysql
-a2enconf zabbix-frontend-php 
 sudo systemctl restart zabbix-server zabbix-agent apache2
 sudo systemctl enable zabbix-server zabbix-agent apache2
 
